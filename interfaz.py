@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import ttk
 from registros import Prueba
 from treeview import *
+from exportar import *
+
 class Ventana(Frame) : 
     def __init__(self, master=None):
         super().__init__(master, width=850, height=460)
@@ -16,7 +18,11 @@ class Ventana(Frame) :
         algo=lambda :self.objeto.getInfo()
         self.boton=Button(self.objeto.aver,text="Guardar",command=algo)
         self.boton.pack(side=BOTTOM)
-
+    def exportar(self):
+        exporta=Excel('Cliente')
+        exporta.exportar_db_a_xlsx()
+        print("Fuie Exportado, ",exporta)
+        pass
     def aporte():
         pass
     def ver():
@@ -43,7 +49,7 @@ class Ventana(Frame) :
         self.resumen=Button(frame1, text="RESUMEN", bd=5)
         self.resumen.place(x=10, y=225, width=80, height=30)
 
-        self.exportar=Button(frame1, text="EXPORTAR", bd=5)
+        self.exportar=Button(frame1, text="EXPORTAR", bd=5,command=self.exportar)
         self.exportar.place(x=10, y=270, width=80, height=30)
 
         self.refrescar=Button(frame1, text="Refresh", bd=5, command=self.refresh)

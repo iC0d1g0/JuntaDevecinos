@@ -7,6 +7,16 @@ class Prueba:
         venta=Tk()
         self.aver=venta
         venta.title="Prueba Objeto"
+        venta.geometry('400x300')
+
+        #
+        self.registroslabel=Label(venta, text='REGISTRA AQUI UN NUEVO MIEMBRO!!')
+        self.registroslabel.place(x=50, y=10)
+        #Contenedor de botones y campos
+        contenedor=Frame(venta)
+        contenedor.place(x=20,y=30)
+
+        """
         #
         self.nombrelabel=Label(venta,text="NOMBRE")
         self.nombrelabel.pack()
@@ -35,7 +45,7 @@ class Prueba:
         
         self.cerrar=Button(venta,text="CERRAR",command=venta.destroy,state=DISABLED)
         self.cerrar.pack(side=BOTTOM)
-        
+        """
     def getInfo(self):
         nombre1=self.nombre.get()
         apellido1=self.apellido.get()
@@ -52,5 +62,14 @@ class Prueba:
         
 
 
-    
-    
+
+def registrar():
+    venta=Tk()
+    objeto=Prueba()
+    algo=lambda :objeto.getInfo()
+    boton=Button(objeto.aver,text="Guardar",command=algo)
+    boton.pack(side=BOTTOM)
+    venta.mainloop()
+
+if __name__=='__main__':
+    registrar()
