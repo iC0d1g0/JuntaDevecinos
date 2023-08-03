@@ -4,7 +4,7 @@ from registros import Prueba
 from treeview import *
 from exportar import *
 
-class Ventana(Frame) : 
+class Ventana(Frame) :
     def __init__(self, master=None):
         super().__init__(master, width=850, height=460)
         self.master=master
@@ -13,14 +13,14 @@ class Ventana(Frame) :
         self.create_widgets()
 
     def registrar(self):
-       
         self.objeto=Prueba()
         algo=lambda :self.objeto.getInfo()
-        self.boton=Button(self.objeto.aver,text="Guardar",command=algo)
+        self.boton=Button(self.objeto.aver,text="Guardar",bd=5,command=algo)
         self.boton.pack(side=BOTTOM)
+        
     def exportar(self):
-        exporta=Excel('Cliente')
-        exporta.exportar_db_a_xlsx()
+        exporta=Excel()
+        
         print("Fuie Exportado, ",exporta)
         pass
     def aporte():
@@ -64,10 +64,7 @@ class Ventana(Frame) :
 
     def refresh(self):
         #self.tabla.insertar("Adderlis","REYES","24","N17","8293891045","100","2000.00")
-      pass  
-      
-       
-        
+      pass      
 
 
 def main():

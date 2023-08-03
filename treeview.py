@@ -6,7 +6,8 @@ class VistaArbol:
         self.x=ladosx
         self.y=altoy
         self.width=ancho
-
+        self.entrada=Entry(self.master)
+        
         self.grid=ttk.Treeview(self.master,columns=("col1","col2","col3","col4","col5","col6","col7"))
         self.grid.column("#0",width=50)
         self.grid.column("col1",width=60,anchor=CENTER)

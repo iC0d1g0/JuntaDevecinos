@@ -1,69 +1,76 @@
 
 from tkinter import *
-from guardadb import *
+from crud import *
 from treeview import *
 class Prueba:
     def __init__(self) -> None:
         venta=Tk()
         self.aver=venta
         venta.title="Prueba Objeto"
-        venta.geometry('400x300')
-
+        venta.geometry('650x170')
+        venta.resizable(False,False)
+        venta.configure(background='#53FFFC')
         #
         self.registroslabel=Label(venta, text='REGISTRA AQUI UN NUEVO MIEMBRO!!')
         self.registroslabel.place(x=50, y=10)
         #Contenedor de botones y campos
-        contenedor=Frame(venta)
-        contenedor.place(x=20,y=30)
+        self.contenedor=Frame(venta,bd=5, bg='#53FFFC')
+        self.contenedor.place(x=20,y=30)
 
-        """
-        #
-        self.nombrelabel=Label(venta,text="NOMBRE")
-        self.nombrelabel.pack()
-        self.nombre=Entry(venta)
-        self.nombre.pack(side=TOP)
-        #
-        self.apellidolabel=Label(venta,text="Apellido")
-        self.apellidolabel.pack()
-        self.apellido=Entry(venta)
-        self.apellido.pack(side=TOP)
-        #
-        self.mzlabel=Label(venta,text="Manzana")
-        self.mzlabel.pack()
-        self.mz=Entry(venta)
-        self.mz.pack(side=TOP)
-        #
-        self.numero_casalabel=Label(venta,text="Numero de casa")
-        self.numero_casalabel.pack()
-        self.numero_casa=Entry(venta)
-        self.numero_casa.pack(side=TOP)
-        #
-        self.telefonolabel=Label(venta,text="Numero de telefono")
-        self.telefonolabel.pack()
-        self.telefono=Entry(venta)
-        self.telefono.pack(side=TOP)
+        #Nombre y entrada
+        self.nombrelabel=self.nombres_entradas("NOMBRE:",0,0)
+        self.nombre=Entry(self.contenedor, font=40)
+        self.nombre.grid(column=1, row=0,padx=5, pady=5)
+        #Apellido y entrada
         
-        self.cerrar=Button(venta,text="CERRAR",command=venta.destroy,state=DISABLED)
-        self.cerrar.pack(side=BOTTOM)
+        self.apellidolabel=self.nombres_entradas("Apellido:",2,0)
+        self.apellido=Entry(self.contenedor, font=40)
+        self.apellido.grid(column=3, row=0,padx=5, pady=5)
+    
+        #
+        self.telefonolabel=self.nombres_entradas("Telefono/Cel.:",2,1)
+        self.telefono=Entry(self.contenedor, font=40)
+        self.telefono.grid(column=3, row=1,padx=5, pady=5)
+
+        #manzana
+        self.manzanalabel=self.nombres_entradas("Manzana",0,2)
+        self.manzana=Entry(self.contenedor, font=40)
+        self.manzana.grid(column=1, row=2,padx=5, pady=5)
+        #Los 
+        
+        self.numero_casalabel=self.nombres_entradas("No. Casa",0,1)
+        self.numero_casa=Entry(self.contenedor, font=40)    
+        self.numero_casa.grid(column=1, row=1,padx=5, pady=5)
+        
+        self.cerrar=Button(venta,text="CERRAR",bd=5,command=venta.destroy,state=DISABLED)
+        self.cerrar.place(x=365,y=138)
+   
+    def nombres_entradas(self,nombre,columna, fila):
+        return Label(self.contenedor,text=nombre, font=20, bg='#53FFFC').grid(column=columna, row=fila, padx=5,pady=5)
+        
+        """
+        
+        
         """
     def getInfo(self):
-        nombre1=self.nombre.get()
-        apellido1=self.apellido.get()
-        mz1=self.mz.get()
-        numero_casa1=self.numero_casa.get()
-        telefono1=self.telefono.get()
+        
+        #Crud.guardar(numero_casa1,nombre1,apellido1,mz1,telefono1)
+        ci=self.numero_casa.get()
+        nombre=self.nombre.get()
+        apellido=self.apellido.get()
+        direccion=self.manzana.get()
+        telefono=self.telefono.get()
+        crud=Crud()
+        crud.guardar(ci,nombre,apellido,direccion,telefono)
 
-        guardado=GuardaDB(nombre1,apellido1,mz1,numero_casa1,telefono1)
-
-
-        guardado.guarda_db()
+        
         print("guardado")
         self.cerrar.config(state=NORMAL)
         
 
 
 
-def registrar():
+"""def registrar():
     venta=Tk()
     objeto=Prueba()
     algo=lambda :objeto.getInfo()
@@ -72,4 +79,5 @@ def registrar():
     venta.mainloop()
 
 if __name__=='__main__':
-    registrar()
+    registrar()"""
+    
