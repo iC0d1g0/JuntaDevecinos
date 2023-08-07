@@ -48,20 +48,15 @@ class Prueba:
     def nombres_entradas(self,nombre,columna, fila):
         return Label(self.contenedor,text=nombre, font=20, bg='#53FFFC').grid(column=columna, row=fila, padx=5,pady=5)
         
-        """
-        
-        
+        """        
         """
     def getInfo(self):
         
         #Crud.guardar(numero_casa1,nombre1,apellido1,mz1,telefono1)
-        ci=self.numero_casa.get()
-        nombre=self.nombre.get()
-        apellido=self.apellido.get()
-        direccion=self.manzana.get()
-        telefono=self.telefono.get()
+       
+        lista=[self.numero_casa.get(),self.nombre.get(),self.apellido.get(),self.manzana.get(),self.telefono.get()]
         crud=Crud()
-        crud.guardar(ci,nombre,apellido,direccion,telefono)
+        crud.guardar(lista)
 
         
         print("guardado")

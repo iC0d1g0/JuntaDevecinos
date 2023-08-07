@@ -3,41 +3,79 @@ from tkinter import ttk
 from registros import Prueba
 from treeview import *
 from exportar import *
-
+from crud import *
 class Ventana(Frame) :
     def __init__(self, master=None):
         super().__init__(master, width=850, height=460)
+        self.crud=Crud()
         self.master=master
         self.pack()
-        self.tabla=VistaArbol(self,100,10,700)
+        nombres_columnas=self.crud.vistaColumnas()
+        self.tabla=VistaArbol(self,100,20,700,430,nombres_columnas)
+        self.tabla.grid['selectmode']='browse' #Esta linea es para desabilitar que se seleccionen mas de un elemento
+        
         self.create_widgets()
-
+        
+    def llenarDatos(self): 
+        datos=self.crud.leer()
+        for row in datos: 
+            self.tabla.insertar(row)
+    def guardar(self):
+        self.objeto.getInfo()
+        self.refresh()
+        
     def registrar(self):
         self.objeto=Prueba()
-        algo=lambda :self.objeto.getInfo()
-        self.boton=Button(self.objeto.aver,text="Guardar",bd=5,command=algo)
+        
+        self.boton=Button(self.objeto.aver,text="Guardar",bd=5,command=self.guardar)
         self.boton.pack(side=BOTTOM)
         
     def exportar(self):
         exporta=Excel()
         
         print("Fuie Exportado, ",exporta)
+
+    def aporte(self):
         pass
-    def aporte():
-        pass
-    def ver():
+    def eliminar(self):
+        selected=self.tabla.grid.focus()
+        clave=self.tabla.grid.item(selected,'text')
+        valores=self.tabla.grid.item(selected,'values')
+        if clave:
+            if messagebox.askokcancel('ELIMINAR', 'seguro que quieres eliminar: {} {} {} {} {}'.format(clave,valores[0],valores[1],valores[2],valores[3])):
+                
+                if self.crud.elminar(clave):
+                    messagebox.showwarning('Albertensia', 'Acabas de eliminar: {} {} {} {} {} '.format(clave,valores[0],valores[1],valores[2],valores[3]))
+
+                else:
+                    messagebox.showerror('ERROR','NO ES POSIBLE ELIMINAR ELEMENTO, ERROR 404')
+            else:
+                pass
+        else: 
+            messagebox.showerror('Eliminar','No selecionaste ningun elemento!')
+        self.refresh()    
+        
+    def ver(self):
         pass
     def create_widgets(self):
         frame1= Frame(self, bg="#bfdaff")
         frame1.place(x=0, y=0, width=93, height=459)
+
+        frame2=Frame(self)
+        frame2.place(x=800,y=0, width=20, height=459)
+        sb=Scrollbar(frame2,orient=VERTICAL)
+        sb.pack(side=RIGHT, fill=Y)
+        self.tabla.grid.config(yscrollcommand=sb.set)
+        sb.config(command=self.tabla.grid.yview)
+
         #Botones
         self.registro=Button(frame1, text="REGISTRO", bd=5, background="#1DE321", command=self.registrar)
         self.registro.place(x=10, y=10, width=80, height=30)
-
+        
         self.actualizar=Button(frame1, text="EDITAR", bd=5, background="#2C91E3")
         self.actualizar.place(x=10, y=50, width=80, height=30)
         
-        self.eliminar=Button(frame1, text="ELIMINAR", bd=5, background="#E35625")
+        self.eliminar=Button(frame1, text="ELIMINAR", bd=5, background="#E35625",command=self.eliminar)
         self.eliminar.place(x=10, y=95, width=80, height=30)
 
         self.aporte1=Button(frame1, text="APORTE", bd=5,background="#35E3CB")
@@ -50,7 +88,7 @@ class Ventana(Frame) :
         self.resumen.place(x=10, y=225, width=80, height=30)
 
         self.exportar=Button(frame1, text="EXPORTAR", bd=5,command=self.exportar)
-        self.exportar.place(x=10, y=270, width=80, height=30)
+        self.exportar.pack(side=BOTTOM)
 
         self.refrescar=Button(frame1, text="Refresh", bd=5, command=self.refresh)
         self.refrescar.place(x=10, y=300, width=80, height=30)
@@ -64,7 +102,10 @@ class Ventana(Frame) :
 
     def refresh(self):
         #self.tabla.insertar("Adderlis","REYES","24","N17","8293891045","100","2000.00")
-      pass      
+        for item in self.tabla.grid.get_children():
+            self.tabla.grid.delete(item)
+
+        self.llenarDatos()
 
 
 def main():
