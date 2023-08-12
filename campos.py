@@ -1,7 +1,11 @@
 from tkinter import *
 import os
 from tkinter import messagebox
+from dotenv import load_dotenv, find_dotenv
+
+
 class Campos:
+    load_dotenv(find_dotenv)
     def __init__(self) -> None:
         self.ventana=Tk()
         self.ventana.geometry('300x300')
@@ -30,9 +34,15 @@ class Campos:
         self.caja2.place(x=50,y=20)
 
 
-        self.caja=Frame(self.ventana)     
-
-        #0
+        self.caja=Frame(self.ventana)
+        self.algo=[]
+        for i in range(5):
+            self.entrda=Entry(self.caja)
+            self.algo.append(self.entrda)
+            self.entrda.grid(column=0,row=i,padx=5, pady=5)
+        self.veamos=[i for i in self.algo]
+         
+        """    #0
         self.entrada1=Entry(self.caja)
         self.entrada1.grid(column=0,row=0,padx=5, pady=5)
         #1
@@ -46,7 +56,7 @@ class Campos:
         self.entrada1.grid(column=0,row=3,padx=5, pady=5)
         #4
         self.entrada1=Entry(self.caja)
-        self.entrada1.grid(column=0,row=4,padx=5, pady=5)
+        self.entrada1.grid(column=0,row=4,padx=5, pady=5)"""
 
 
 
@@ -55,15 +65,23 @@ class Campos:
         self.boton.pack()
         
 
-
+    def modifica_env(self): 
+        new_secret_key = "compra"
+        os.environ["SECRET_KEY"] = new_secret_key
+        with open(find_dotenv(), "a") as f:
+            f.write(f"TABLA={new_secret_key}\n")
 
 
         self.ventana.mainloop()
     def guardar(self):
-        if os.path.exists('./interfaz.py'):
+        valores=[]
+        for i in self.veamos:
+            valores.append(i.get())
+        print(valores)
+        """ if os.path.exists('./interfaz.py'):
             messagebox.showinfo('Bienvenido!!', 'Accediste a Jv CRUD')
             self.ventana.destroy()
-            os.system('python interfaz.py')
+            os.system('python interfaz.py')"""
 
 if __name__=='__main__': 
     Campos()

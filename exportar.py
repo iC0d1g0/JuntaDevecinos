@@ -33,7 +33,7 @@ class Excel(Crud): #FUnciona!!!!
             self.exportar_db_a_xlsx()
 
         def exportar_db_a_xlsx(self):
-            self.cursor.execute(f"SELECT * FROM compra")
+            self.cursor.execute(f"SELECT * FROM {self.tabla}")
             self.datos=self.cursor.fetchall()
             # Obtener los nombres de las columnas
             nombres_columnas = [descripcion[0] for descripcion in self.cursor.description]

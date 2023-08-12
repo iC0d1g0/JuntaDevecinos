@@ -20,6 +20,8 @@ class Ventana(Frame) :
         datos=self.crud.leer()
         for row in datos: 
             self.tabla.insertar(row)
+            print('esta es la lista',row)
+
     def guardar(self):
         self.objeto.getInfo()
         self.refresh()
@@ -29,23 +31,50 @@ class Ventana(Frame) :
         
         self.boton=Button(self.objeto.aver,text="Guardar",bd=5,command=self.guardar)
         self.boton.pack(side=BOTTOM)
+
+    def ayudamodificar(self,valores):
+        self.objeto=Prueba()
+        if self.objeto.editando(valores):
+            boton=Button(self.objeto.aver,text="Modificar",bd=5, command=lambda:self.objeto.getEditar())
+            boton.pack(side=BOTTOM)
+
+
+
+    def exportar(self): 
+        Excel()
+    
+    def modificar(self):
+        selected=self.tabla.grid.focus()
+        clave=self.tabla.grid.item(selected,'text')
+        print('depurando clave',clave)
+        valores=self.tabla.grid.item(selected,'values')#Obetengo una tupla con los valores
+        if clave:
+            if messagebox.askokcancel('modificar', 'seguro que quieres "Modificar": {}'.format(' '.join(valores))):
+                 valores =list(valores)
+                 valores.insert(0,str(clave))
+                 self.ayudamodificar(valores)
+                 print('Depurando',tuple(valores))
+                 
+        #self.refresh()  
         
-    def exportar(self):
-        exporta=Excel()
-        
-        print("Fuie Exportado, ",exporta)
 
     def aporte(self):
+        slected=self.tabla.grid.focus()
+        clave=self.tabla.grid.item(selected,'text')
+        valores=self.tabla.grid.item(selected,'values')
         pass
+
+
     def eliminar(self):
         selected=self.tabla.grid.focus()
         clave=self.tabla.grid.item(selected,'text')
         valores=self.tabla.grid.item(selected,'values')
+        print(clave)
         if clave:
-            if messagebox.askokcancel('ELIMINAR', 'seguro que quieres eliminar: {} {} {} {} {}'.format(clave,valores[0],valores[1],valores[2],valores[3])):
+            if messagebox.askokcancel('modificar', 'seguro que quieres eliminar: {}'.format(' '.join(valores))):
                 
                 if self.crud.elminar(clave):
-                    messagebox.showwarning('Albertensia', 'Acabas de eliminar: {} {} {} {} {} '.format(clave,valores[0],valores[1],valores[2],valores[3]))
+                    messagebox.showwarning('Albertensia', 'Acabas de eliminar: {}'.format(' '.join(valores)))
 
                 else:
                     messagebox.showerror('ERROR','NO ES POSIBLE ELIMINAR ELEMENTO, ERROR 404')
@@ -53,10 +82,13 @@ class Ventana(Frame) :
                 pass
         else: 
             messagebox.showerror('Eliminar','No selecionaste ningun elemento!')
-        self.refresh()    
-        
-    def ver(self):
+        self.refresh()
+
+
+    def buscar(self):
         pass
+
+
     def create_widgets(self):
         frame1= Frame(self, bg="#bfdaff")
         frame1.place(x=0, y=0, width=93, height=459)
@@ -72,7 +104,7 @@ class Ventana(Frame) :
         self.registro=Button(frame1, text="REGISTRO", bd=5, background="#1DE321", command=self.registrar)
         self.registro.place(x=10, y=10, width=80, height=30)
         
-        self.actualizar=Button(frame1, text="EDITAR", bd=5, background="#2C91E3")
+        self.actualizar=Button(frame1, text="EDITAR", bd=5, background="#2C91E3",command=self.modificar)
         self.actualizar.place(x=10, y=50, width=80, height=30)
         
         self.eliminar=Button(frame1, text="ELIMINAR", bd=5, background="#E35625",command=self.eliminar)
@@ -92,6 +124,17 @@ class Ventana(Frame) :
 
         self.refrescar=Button(frame1, text="Refresh", bd=5, command=self.refresh)
         self.refrescar.place(x=10, y=300, width=80, height=30)
+
+
+        #Buscador de elementos para filtrar la tabla
+        #Se colocará un imput coon un botón
+
+        #input
+        self.entryBuscar=Entry(frame2)
+        #self.entryBuscar.
+
+        self.buscar=Button(frame2, text="Buscar", bd=5, command=self.buscar)
+        self.buscar.place(x=300, y=10, width=80, height=30)
         #Montor el TreeView
         
         
