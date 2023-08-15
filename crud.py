@@ -11,9 +11,9 @@ class Crud:
             messagebox.showerror('Conexion Error', ex)
 
     # Obtener los nombres de las columnas
-    def vistaColumnas(self):
+    def vistaColumnas(self,nom_tabla):
         self.cursor=self.conexion.cursor()
-        self.cursor.execute("SELECT * FROM {}".format(self.tabla))
+        self.cursor.execute("SELECT * FROM {}".format(nom_tabla))
         self.datos=self.cursor.fetchall()
         
         nombres_columnas = [descripcion[0] for descripcion in self.cursor.description]
@@ -29,15 +29,15 @@ class Crud:
             self.conexion.commit() # commit para guardar los datos
             self.cursor.close()
         return messagebox.showinfo("Informacion", "Datos guardados correctamente")"""
-    def guardar(self, values):
+    def guardar(self, values,tabla):
         if any(value == "" for value in values):
             return messagebox.showerror("Error", "No se permiten campos vacíos")
         else:
             self.cursor = self.conexion.cursor()
-            column_names = self.vistaColumnas()
+            column_names = self.vistaColumnas(tabla)
             placeholders = ', '.join(['%s'] * len(column_names[1:]))#crea una cadena solo usando %s, %s, %s...
             #Esto lo uso para posteriormente reemplazar los %s con los valores reales.
-            query = f"INSERT INTO {self.tabla} ({','.join(column_names[1:])}) VALUES ({placeholders})"
+            query = f"INSERT INTO {tabla} ({','.join(column_names[1:])}) VALUES ({placeholders})"
             self.cursor.execute(query, values)
             self.conexion.commit()
             self.cursor.close()
@@ -45,7 +45,7 @@ class Crud:
     #Necesito reparar la funcion Elimiar, para que reciva por parametro una lista de 
     #elementos, como lo hace la funcion modificar. 
     def elminar(self, id):
-        nombre_columna=self.vistaColumnas()
+        nombre_columna=self.vistaColumnas(self.tabla)
         """Elimina un registro de la base de datos si existe. En caso de que no exista, muestra un mensaje de error."""
         if id == "":
             messagebox.showerror("Error", "No se permiten campos vacios")
@@ -72,7 +72,7 @@ class Crud:
 
     def existe(self, id):
         """Retorna True si existe el registro, False en caso contrario."""
-        nombre_columna=self.vistaColumnas()
+        nombre_columna=self.vistaColumnas(self.tabla)
         self.cursor=self.conexion.cursor()
         self.cursor.execute(f"SELECT * FROM {self.tabla} WHERE {nombre_columna[0]} = {id}")
         datos = self.cursor.fetchall()
@@ -84,7 +84,7 @@ class Crud:
             return messagebox.showerror("Error", "Se requiere al menos un valor no vacío y el identificador")
         else:
             self.cursor = self.conexion.cursor()
-            column_names = self.vistaColumnas()
+            column_names = self.vistaColumnas(self.tabla)
             id_column = column_names[0]  # Tomamos el nombre de la primera columna como el identificador
             set_clause = ', '.join(f"{col} = %s" for col in column_names[1:])
             query = f"UPDATE {self.tabla} SET {set_clause} WHERE {id_column} = %s"
@@ -103,17 +103,33 @@ class Crud:
             self.cursor.close()
             messagebox.showinfo("Informacion", "Datos modificados correctamente")"""
         
-    def leer(self):
+    def leer(self,nombre_tabla=None):
+        mi_tabla= nombre_tabla if nombre_tabla != None else self.tabla
         self.cursor=self.conexion.cursor()
-        self.cursor.execute("SELECT * FROM {}".format(self.tabla))
+        self.cursor.execute("SELECT * FROM {}".format(mi_tabla))
         datos = self.cursor.fetchall()
-        print(datos)
+       
+        self.cursor.close()
+        # messagebox.showinfo("Informacion", "Datos cargados correctamente")
+        return datos
+    def buscar_db(self,clave,nombre_tabla=None):
+        mi_tabla= nombre_tabla if nombre_tabla != None else self.tabla
+        self.cursor=self.conexion.cursor()
+        self.cursor.execute("SELECT * FROM {} WHERE id_usuarios = {}".format(mi_tabla,clave))
+        datos = self.cursor.fetchall()
+       
         self.cursor.close()
         # messagebox.showinfo("Informacion", "Datos cargados correctamente")
         return datos
     
     
-    
+    def sumarcolumnas(self, nombre_columna, nombre_tabla):
+       
+        self.cursor=self.conexion.cursor()
+        self.cursor.execute("SELECT SUM({}) AS Aportes_ FROM {}".format(nombre_columna,nombre_tabla))
+        datos = self.cursor.fetchall()
+        self.cursor.close()
+        return datos
 
 """if __name__=='__main__':
     os.system("cls")

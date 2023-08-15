@@ -17,8 +17,25 @@ else:
 
 
 import tkinter as tk
-from tkinter import ttk
 
+import time
+
+def actualizar_reloj():   
+    ahora = time.strftime("%d-%m-%Y %H:%M:%S")
+    etiqueta.config(text=ahora)
+    ventana.after(1000, actualizar_reloj)  # Actualizar cada segundo
+
+ventana = tk.Tk()
+ventana.title("Reloj Digital")
+
+etiqueta = tk.Label(ventana, font=("Helvetica", 48), fg="blue")
+etiqueta.pack(padx=20, pady=20)
+
+actualizar_reloj()  # Iniciar la actualización del reloj
+
+ventana.mainloop()
+
+""""
 root = tk.Tk()
 
 tree = ttk.Treeview(root)
@@ -39,3 +56,4 @@ tree.insert("", "end", text="", values=("Jane Smith", 30, "Los Angeles"))
 tree.pack()
 
 root.mainloop()
+"""

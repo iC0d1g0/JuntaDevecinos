@@ -23,22 +23,22 @@ class Excel(Crud): #FUnciona!!!!
         """
         Llamar el objecto conexion
         """
-        def __init__(self):
+        def __init__(self,tabla):
             super().__init__()
             self.cursor=self.conexion.cursor()
-            
+            self.tablapropia=tabla
             """self.datos=self.cru.leer()
             self.description=self.cru.exportar()"""
             self.archivo_xlsx = f"C:/Users/{os.getenv('USERNAME')}/Desktop/Reporte_JV"
             self.exportar_db_a_xlsx()
 
         def exportar_db_a_xlsx(self):
-            self.cursor.execute(f"SELECT * FROM {self.tabla}")
+            self.cursor.execute(f"SELECT * FROM {self.tablapropia}")
             self.datos=self.cursor.fetchall()
             # Obtener los nombres de las columnas
             nombres_columnas = [descripcion[0] for descripcion in self.cursor.description]
             # Quiero utilizar esto para leer las columnas de las base de datos
-            print(nombres_columnas)
+            
             # Crear un nuevo libro de trabajo (Workbook)
             libro_trabajo = Workbook() #
             hoja = libro_trabajo.active # Crear una hoja en el libro de trabajo
@@ -72,7 +72,7 @@ class Excel(Crud): #FUnciona!!!!
                     self.archivo_xlsx+='_'
                     #Este ciclo solo sirve para confirmar los archivos existentes con el mismo nombre. 
                     while  os.path.exists('{}{}.xlsx'.format(self.archivo_xlsx,contador)): 
-                        print('{}{}.xlsx'.format(self.archivo_xlsx,contador))
+                        
                         contador+=1
                     libro_trabajo.save('{}{}.xlsx'.format(self.archivo_xlsx,contador))
                     messagebox.showinfo("Exportacion", 'Guardado en: {}{}.xlsx'.format(self.archivo_xlsx,contador))
@@ -88,5 +88,3 @@ class Excel(Crud): #FUnciona!!!!
 
      
 
-if __name__=='__main__':
-    Excel()

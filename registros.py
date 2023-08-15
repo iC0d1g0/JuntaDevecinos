@@ -3,10 +3,10 @@ from tkinter import *
 from crud import *
 from treeview import *
 class Prueba:
-    def __init__(self) -> None:
+    def __init__(self,columnas) -> None:
         venta=Tk()
         self.crud=Crud()
-        self.columnas=self.crud.vistaColumnas()
+        self.columnas=self.crud.vistaColumnas(columnas)
         self.aver=venta
         venta.title="Prueba Objeto"
         venta.geometry('400x550')
@@ -22,15 +22,17 @@ class Prueba:
         #Resuelto en pocas lineas de codigo
         j=0
         obEntrada=[]
+        labels=[]
         for i in self.columnas:
             self.nombrelabel=self.nombres_entradas('{}:'.format(i),0,j)
             self.nombre=Entry(self.contenedor, font=40)
             self.nombre.grid(column=1, row=j,padx=5, pady=5)
-           
-                
+
+            labels.append(self.nombrelabel)
             obEntrada.append(self.nombre)
-            print(self.columnas)
+            
             j+=1
+        self.label=labels
         self.obentrada=[i for i in obEntrada]
         self.obentrada[0].config(state='disable')
            
@@ -46,10 +48,10 @@ class Prueba:
         cont=0
         for i in lista2:
             lista.append(i.insert(0,valores[cont]))
-            print(valores[cont])
+            
             cont+=1
         lista2[0].config(state='disable')
-        print(lista)
+       
         return True
         #self.cerrar.config(state=NORMAL)
     def getEditar(self):
@@ -57,7 +59,7 @@ class Prueba:
         lista=[]
         for i in lista2:
             lista.append(i.get())
-            print(lista)
+            
         
         crud=Crud()
         crud.modificar(lista)
@@ -72,14 +74,17 @@ class Prueba:
         for i in lista2:
             if i:
                 lista.append(i.get())
-                print(lista)
-        
-        
+                
         crud=Crud()
-        crud.guardar(lista[1:])
+        crud.guardar(lista[1:],self.crud.tabla)
 
-        
-        print("guardado")
+      
+
+
+    def aportar(self, lista_valores):
+        self.crud.guardar(lista_valores,'jv_aportes')
+
+        pass
 
 def registrar():
     venta=Tk()
@@ -89,26 +94,4 @@ def registrar():
     boton.pack(side=BOTTOM)
     venta.mainloop()
 
-if __name__=='__main__':
-    registrar()
 
-"""#Apellido y entrada
-        
-        self.apellidolabel=self.nombres_entradas("Apellido:",2,0)
-        self.apellido=Entry(self.contenedor, font=40)
-        self.apellido.grid(column=3, row=0,padx=5, pady=5)
-    
-        #
-        self.telefonolabel=self.nombres_entradas("Telefono/Cel.:",2,1)
-        self.telefono=Entry(self.contenedor, font=40)
-        self.telefono.grid(column=3, row=1,padx=5, pady=5)
-
-        #manzana
-        self.manzanalabel=self.nombres_entradas("Manzana",0,2)
-        self.manzana=Entry(self.contenedor, font=40)
-        self.manzana.grid(column=1, row=2,padx=5, pady=5)
-        #Los 
-        
-        self.numero_casalabel=self.nombres_entradas("No. Casa",0,1)
-        self.numero_casa=Entry(self.contenedor, font=40)    
-        self.numero_casa.grid(column=1, row=1,padx=5, pady=5)"""

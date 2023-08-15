@@ -42,22 +42,6 @@ class Campos:
             self.entrda.grid(column=0,row=i,padx=5, pady=5)
         self.veamos=[i for i in self.algo]
          
-        """    #0
-        self.entrada1=Entry(self.caja)
-        self.entrada1.grid(column=0,row=0,padx=5, pady=5)
-        #1
-        self.entrada1=Entry(self.caja)
-        self.entrada1.grid(column=0,row=1,padx=5, pady=5)
-        #2
-        self.entrada1=Entry(self.caja)
-        self.entrada1.grid(column=0,row=2,padx=5, pady=5)
-        #3
-        self.entrada1=Entry(self.caja)
-        self.entrada1.grid(column=0,row=3,padx=5, pady=5)
-        #4
-        self.entrada1=Entry(self.caja)
-        self.entrada1.grid(column=0,row=4,padx=5, pady=5)"""
-
 
 
         self.caja.pack(side=TOP)

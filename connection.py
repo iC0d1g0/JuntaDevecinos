@@ -30,7 +30,7 @@ class Conexion:
         
         try:
             self.info=self.cnn()
-            print(self.info)
+           
             self.fe=self.cnn.cursor()
         
         except Exception as ex:
@@ -39,4 +39,4 @@ class Conexion:
         finally:
             if self.cnn.is_connected():
                 self.cnn.close()
-                print("Conexion finalizada")
+                
